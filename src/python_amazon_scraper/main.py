@@ -27,7 +27,7 @@ class ExtractAmazon:
             title = self.soup.find("span", attrs={"id":'productTitle'})
             title_string = title.string.strip()
 
-        except AttributeError:
+        except AttributeError as e:
             title_string = ""	
             
         return title_string
@@ -37,10 +37,10 @@ class ExtractAmazon:
         try:
             price = self.soup.find("span", attrs={'id':'priceblock_ourprice'}).string.strip()
 
-        except AttributeError:          
+        except AttributeError as e:          
             try:
                 price_tag = self.soup.select_one("#corePriceDisplay_desktop_feature_div > div.a-section.a-spacing-none.aok-align-center > span.a-price.aok-align-center.reinventPricePriceToPayMargin.priceToPay > span:nth-child(2) > span.a-price-whole")
-                price = price_tag.string.strip()
+                price = price_tag.string.strip().replace(',','')
             except Exception:
                 price =''	
 
@@ -53,7 +53,8 @@ class ExtractAmazon:
         except AttributeError:
             try:
                 rating = self.soup.find("span", attrs={'class':'a-icon-alt'}).string.strip()
-            except Exception:
+            except Exception as e:
+                print('Exception: ', e)
                 rating = ""	
 
         return rating
@@ -63,7 +64,8 @@ class ExtractAmazon:
         try:
             review_count = self.soup.find("span", attrs={'id':'acrCustomerReviewText'}).string.strip()
             
-        except AttributeError:
+        except AttributeError as e:
+            print('Exception: ', e)
             review_count = ""	
 
         return review_count
@@ -75,7 +77,8 @@ class ExtractAmazon:
             available = available.find("span").string.strip()
             return available == 'In stock'
 
-        except AttributeError:
+        except AttributeError as e:
+            print('Exception: ', e)
             return False	
         
     # Function to extract images 
@@ -86,6 +89,7 @@ class ExtractAmazon:
             # FIXME: FETCH ALL IMAGES
             return [image_src]
         except AttributeError as e:
+            print('Exception: ', e)
             return False
     
     # Function to extract deal badge
@@ -103,5 +107,6 @@ class ExtractAmazon:
                 
             return bool(deal_span)
         
-        except AttributeError:
+        except AttributeError as e:
+            print('Exception: ', e)
             return False
