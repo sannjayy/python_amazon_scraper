@@ -18,7 +18,7 @@ classifiers = [
  
 setup(
   name='python_amazon_scraper',
-  version='1.2.0',
+  version='1.3.0',
   description='Scrap Product Data from Amazon',
   long_description=long_description,
   long_description_content_type="text/markdown",

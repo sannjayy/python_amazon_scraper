@@ -35,16 +35,20 @@ class ExtractAmazon:
     # Function to extract Product Price
     def get_price(self):
         try:
-            price = self.soup.find("span", attrs={'id':'priceblock_ourprice'}).string.strip()
+            price = self.soup.find("span", attrs={'id':'priceblock_ourprice'}).string
 
         except AttributeError as e:          
             try:
                 price_tag = self.soup.select_one("#corePriceDisplay_desktop_feature_div > div.a-section.a-spacing-none.aok-align-center > span.a-price.aok-align-center.reinventPricePriceToPayMargin.priceToPay > span:nth-child(2) > span.a-price-whole")
-                price = price_tag.string.strip().replace(',','')
+                price = price_tag.string
             except Exception:
-                price =''	
+                try:
+                    price_table = self.soup.select_one("#corePrice_desktop>div>table")
+                    price = price_table.find("span", attrs={'class':'a-offscreen'}).text
+                except Exception:
+                    price =''	
 
-        return price
+        return price.strip().replace(',','').replace('₹', '')
 
     # Function to extract Product Rating
     def get_rating(self):
