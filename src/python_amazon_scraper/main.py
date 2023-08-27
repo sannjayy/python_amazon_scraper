@@ -4,13 +4,13 @@ from bs4 import BeautifulSoup as bs
 headers = {
         'dnt': '1',
         'upgrade-insecure-requests': '1',
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
         'sec-fetch-site': 'same-origin',
         'sec-fetch-mode': 'navigate',
         'sec-fetch-user': '?1',
         'sec-fetch-dest': 'document',
-        'referer': 'https://www.amazon.com/',
+        'referer': 'https://www.google.com/',
         'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
     }
 
@@ -73,10 +73,9 @@ class ExtractAmazon:
     # Function to extract Availability Status
     def is_available(self):
         try:
-            available = self.soup.find("div", attrs={'id':'availability'})
-            available = available.find("span").string.strip()
-            return available == 'In stock'
-
+            available = self.soup.find("input", attrs={'id':'add-to-cart-button'})
+            return bool(available)
+        
         except AttributeError as e:
             print('Exception: ', e)
             return False	
